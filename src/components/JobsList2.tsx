@@ -4,16 +4,16 @@ import { arrayMove, SortableContainer, SortableElement } from 'react-sortable-ho
 import '../JobsList.css';
 
 const SortableItem = SortableElement(({value}: {value: string}) =>
-  <li>{value}</li>
+  <li><span>2</span>{value}</li>
 );
 
 const SortableList = SortableContainer(({items}: {items: string[]}) => {
   return (
-    <ul>
-      {items.map((value, index) => (
-        <SortableItem key={`item-${index}`} index={index} value={value} />
-      ))}
-    </ul>
+      <ul>
+        {items.map((value, index) => (
+          <SortableItem key={`item-${index}`} index={index} value={value} />
+        ))}
+      </ul>
   );
 });
 
