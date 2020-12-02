@@ -35,6 +35,7 @@ class JobsList2 extends React.Component<{}, {items: string[]}> {
   render() {
     return (
     <div className={'container'}>
+        <h2>Lista Posturi</h2>
         <SortableList items={this.state.items} onSortEnd={this.onSortEnd} />
     </div>
     )

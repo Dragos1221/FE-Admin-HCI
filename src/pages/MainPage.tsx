@@ -69,7 +69,9 @@ class MainPage extends React.Component<MainPageProps, MainPageState> {
                 <div className={classes.pageBox}>
                     <div className = {classes.cvListBox}>
                         <Card className={classes.cvCard}>
-                            <div className={classes.jobList}><JobsList2 /></div>
+                            <div className={classes.jobList}>
+                                <JobsList2 />
+                            </div>
                             
                             <div className={classes.jobButtonBox}>
                                 <Button variant="contained" color="primary">
