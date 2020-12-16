@@ -71,6 +71,7 @@ const styles = createStyles({
         display:'flex',
         justifyContent:'center',
         marginBottom:'10%',
+        
     },
     genLabel : {
         display:'flex',
@@ -137,7 +138,7 @@ class UpdateCV extends React.Component<UpdateCVProps, UpdateCVState> {
                         <InputLabel>Varsta</InputLabel>
                             <Select
                                 value={varsta}
-                                onChange={this.handleData}
+                                onChange={this.handleData("varsta")}
                                 label="Varsta"
                                 >
                                 {this.varsta().map((item) => (
@@ -149,7 +150,7 @@ class UpdateCV extends React.Component<UpdateCVProps, UpdateCVState> {
                     <div className={classes.genBox}>
                         <div>
                             <label className = {classes.genLabel}>Selectati genul: </label>
-                            <RadioGroup aria-label="gender" name="gender1" value={gen} onChange={this.handleData} row>
+                            <RadioGroup aria-label="gender" name="gender1" value={gen} onChange={this.handleData("gen")} row>
                                 <FormControlLabel value="male" control={<Radio />} label="Barbat" />
                                 <FormControlLabel value="female" control={<Radio />} label="Femeie" />
                             </RadioGroup>
@@ -158,7 +159,7 @@ class UpdateCV extends React.Component<UpdateCVProps, UpdateCVState> {
                     <div className={classes.genBox}>
                         <div className={classes.genContinut}>
                             <label className = {classes.genLabel}>Stare conjugala: </label>
-                            <RadioGroup aria-label="Stare conjugala" name="gender1" value={casatorit} onChange={this.handleData} row>
+                            <RadioGroup aria-label="Stare conjugala" name="gender1" value={casatorit} onChange={this.handleData("casatorit")} row>
                                 <FormControlLabel value="Casatorit(a)" control={<Radio />} label="Casatorit(a)" />
                                 <FormControlLabel value="Necasatorit(a)" control={<Radio />} label="Necasatorit(a)" />
                             </RadioGroup>
@@ -169,18 +170,20 @@ class UpdateCV extends React.Component<UpdateCVProps, UpdateCVState> {
                 <TextField
                         label="Specializare"
                         multiline
-                        rows={44}
+                        rows={24}
                         variant="outlined"
                         value={educatie}
+                        onChange={this.handleData("educatie")}
                     />
                 </div>
                 <div className={classes.containerItems}>
                 <TextField
-                        label="Specializare"
+                        label="Educaties"
                         multiline
-                        rows={44}
+                        rows={24}
                         variant="outlined"
                         value={munca}
+                        onChange={this.handleData("munca")}
                     />
                 </div>
             </div>
