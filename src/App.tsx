@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 import LoginPage from '../src/pages/LoginPage';
 import MainPage from '../src/pages/MainPage'
+import UpdateCVPage from './pages/UpdateVCPage';
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
       <Switch>
         <Route exact={true} path="/" component={LoginPage}></Route>
         <Route exact={true} path="/home" component={MainPage}></Route>
+        <Route exact={true} path="/updateCV" component={UpdateCVPage}></Route>
       </Switch>
     </Router>
   );
