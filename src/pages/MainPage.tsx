@@ -2,13 +2,18 @@ import * as React from 'react';
 import { withStyles, createStyles } from '@material-ui/core/styles';
 import JobsList2 from '../../src/components/JobsList2'
 import { Button, Card, Typography } from '@material-ui/core';
+import ServiceApi from '../remote/ServiceApi';
+import { RouteComponentProps } from 'react-router-dom';
+import CvlistComponent from '../components/CvList'
 
-export interface MainPageProps {
+
+export interface MainPageProps extends RouteComponentProps {
     classes: any;
 }
  
 export interface MainPageState {
-    
+    jobsList: any;
+    cvList  : any;
 }
 
 const styles = createStyles({
@@ -62,6 +67,68 @@ const styles = createStyles({
 
 
 class MainPage extends React.Component<MainPageProps, MainPageState> {
+    private service:ServiceApi;
+    constructor(props:MainPageProps)
+    {
+        super(props);
+        this.state ={
+            jobsList:[],
+            cvList:[],
+        }
+       this.service = new ServiceApi();
+    }
+
+    async componentDidMount()
+    {
+        const jobs =await this.service.getJobs();
+        this.setState({
+            jobsList:jobs.data,
+        })
+    }
+
+    updateListJobs = (data:any)=>{
+        this.setState({
+            jobsList:data,
+        });
+    }
+
+    showCv = (id:any)=>{
+        localStorage.setItem("idJob",id);
+        this.props.history.push('/updateCV');
+    }
+
+    newCV = ()=>{
+        localStorage.setItem("idJob","-1");
+        this.props.history.push('/updateCV');
+    }
+
+    selectedCv = async (id: any)=>{
+        try{
+            const data =await this.service.getCv(id);
+            this.setState({
+                cvList:data.data,
+            })
+        }catch(err)
+        {
+            console.log(err);
+            this.setState({
+                cvList:[],
+            })
+        }
+    }
+
+
+    save= ()=>{
+        try{
+            
+
+        }catch(err)
+        {
+            alert("CV-ul nu a fost salvat");
+        }
+    }
+
+
     render() { 
         const {classes} = this.props
         return (
@@ -70,7 +137,7 @@ class MainPage extends React.Component<MainPageProps, MainPageState> {
                     <div className = {classes.cvListBox}>
                         <Card className={classes.cvCard}>
                             <div className={classes.jobList}>
-                                <JobsList2 />
+                                <JobsList2 select={this.selectedCv} updateJob={(e:any)=>console.log(e)} updateListJobs={this.updateListJobs} items={this.state.jobsList} />
                             </div>
                             
                             <div className={classes.jobButtonBox}>
@@ -86,11 +153,12 @@ class MainPage extends React.Component<MainPageProps, MainPageState> {
                     </div>
                     <div className = {classes.cvListBox}>
                         <Card className={classes.cvCard}>
-                            <div className={classes.jobList}><JobsList2 /></div>
+                            <div className={classes.jobList}>
+                                <CvlistComponent selectCv={this.showCv} items={this.state.cvList} /></div>
                             
                             <div className={classes.jobButtonBox}>
-                                <Button variant="contained" color="primary">
-                                    Primary
+                                <Button variant="contained" color="primary" onClick={this.newCV}>
+                                    New CV
                                 </Button>
 
                                 <Button variant="contained" color="secondary">
@@ -108,7 +176,6 @@ class MainPage extends React.Component<MainPageProps, MainPageState> {
                             <Button className={classes.buttonDescarca} variant="contained" color="secondary">
                                 DESCARCA
                             </Button>
-
                         </Card>
                     </div>
                 </div>        

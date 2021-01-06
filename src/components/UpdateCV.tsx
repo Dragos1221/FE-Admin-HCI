@@ -123,7 +123,7 @@ class UpdateCV extends React.Component<UpdateCVProps, UpdateCVState> {
                                     ></CardHeader>
                                 </div>
                                 <CardMedia
-                                    image={imgSrc}
+                                    image={imgSrc} src={imgSrc}
                                 />
                             </Card>
                         </div>
