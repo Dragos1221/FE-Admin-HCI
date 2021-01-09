@@ -18,15 +18,16 @@ class JobsList2 extends React.Component<CvListProps, CVListState> {
   <ul key={2} id={'ulList'}>
     {items.map((value :any, index:any) => {
       if (value != null)
-        return <this.SortableItem key={value.id} index={value.id} value={value.name} id={index+1}/>;
+        return <this.SortableItem key={value.id} index={value.id} value={value.name} id={value.id} order={index+1}/>;
     })}
   </ul>);
   
-   SortableItem = SortableElement(({value, id}: {value: string, id: number}) =>
+   SortableItem = SortableElement(({value, id , order}: {value: string, id: number , order:number}) =>
     <li key={id} onDoubleClick={(e:any)=>{
+        console.log(e);
         this.props.selectCv(e.target.id);
       }
-    } id={''+id} value={value}><span>{id}</span>{value}</li>
+    } id={''+id} value={value}> <span>{order}</span>{value}</li>
   );
 
   private onSortEnd = ({oldIndex, newIndex}: {oldIndex: number, newIndex: number}) => {

@@ -1,6 +1,7 @@
-import { Button, Card, CardHeader, CardMedia, FormControl, FormControlLabel, InputLabel, MenuItem, Radio, RadioGroup, Select, TextField } from '@material-ui/core';
+import { Button,Input, Card, CardHeader, CardMedia, FormControl, FormControlLabel,  InputLabel, MenuItem, Radio, RadioGroup, Select, TextField, CardContent, Typography, CardActionArea } from '@material-ui/core';
 import * as React from 'react';
 import { withStyles, createStyles } from '@material-ui/core/styles';
+import Service from "../remote/ServiceApi"
 
 export interface UpdateCVProps {
     classes:any;
@@ -15,8 +16,9 @@ export interface UpdateCVProps {
 }
  
 export interface UpdateCVState {
-    
+    selectedImg:any;
 }
+
 
 const styles = createStyles({
     container : {
@@ -92,11 +94,19 @@ const styles = createStyles({
 });
  
 class UpdateCV extends React.Component<UpdateCVProps, UpdateCVState> {
+
+    private service:Service = new Service();
     handleData = (type: any) => (event: any) => {
         this.props.handleChange({
             [type]: event.target.value,
         });
     };
+
+    handleImg =(type:string ) =>(event:any)=>{
+        this.props.handleChange({
+            [type]:URL.createObjectURL(this.state.selectedImg)
+        })
+    }
 
     varsta = () => {
         let lst = [];
@@ -108,8 +118,24 @@ class UpdateCV extends React.Component<UpdateCVProps, UpdateCVState> {
         return lst;
     }
 
+
+    test = async ()=>{
+        const b=await this.toBase64(this.state.selectedImg);
+        this.service.updateCv({
+            img:b+"dasd",
+            test:'ttttt'
+        })
+    }
+
+   toBase64 = (file:any) => new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = error => reject(error);
+    });
+
     render() { 
-        const {classes, imgSrc, varsta, gen, casatorit, educatie, munca, nume} = this.props;
+        const {classes, varsta,imgSrc ,gen, casatorit, educatie, munca, nume} = this.props;
         return (
         <div>
             <div className={classes.container}>
@@ -122,15 +148,24 @@ class UpdateCV extends React.Component<UpdateCVProps, UpdateCVState> {
                                         title={nume}
                                     ></CardHeader>
                                 </div>
-                                <CardMedia
-                                    image={imgSrc} src={imgSrc}
-                                />
+                                <div>
+                                    <img width="300px" height="300px" src={imgSrc} alt={nume}/>
+                                </div>
                             </Card>
                         </div>
                         <div className={classes.profileButtonBox}>
-                            <Button variant='contained' color='primary'  className={classes.profileButton}>
+                            <Button variant='contained' color='primary' onClick={
+                                this.handleImg("imgSrc")
+                            }  className={classes.profileButton}>
                                 Incarca imagine
                             </Button>
+                            <Input type="file" onChange={
+                                (e:any)=>{
+                                    this.setState({
+                                        selectedImg:e.target.files[0]
+                                    })
+                                }
+                            }></Input>
                         </div>
                     </div>
                     <div className={classes.varstaBox}>
@@ -188,7 +223,9 @@ class UpdateCV extends React.Component<UpdateCVProps, UpdateCVState> {
                 </div>
             </div>
             <div className={classes.nextButtonBox}>
-                <Button variant='contained' color='primary'  className={classes.nextButton}>
+                <Button variant='contained' color='primary'  className={classes.nextButton} onClick={
+                    this.test
+                }>
                     Next
                 </Button>
             </div>

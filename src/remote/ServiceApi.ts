@@ -4,7 +4,7 @@ class ServiceApi {
     private instance: AxiosInstance;
     constructor() {
     	this.instance = axios.create({
-    		baseURL:'http://localhost:3000'
+            baseURL:'http://localhost:3000',
     	});
 
     }
@@ -19,6 +19,14 @@ class ServiceApi {
 
     async getJobById(id:any) {
     	return this.instance.get('http://localhost:3000/admin/cvs/'+id);
+    }
+
+    async updateCv(body:any) {
+    	return this.instance.post('http://localhost:3000/admin/cvs/test',body);
+    }
+
+    async getXcel(body:any) {
+    	return this.instance.post('http://localhost:3000/admin/jobs/excel',body);
     }
 }
 export default ServiceApi;

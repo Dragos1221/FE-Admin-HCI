@@ -5,6 +5,7 @@ import { Button, Card, Typography } from '@material-ui/core';
 import ServiceApi from '../remote/ServiceApi';
 import { RouteComponentProps } from 'react-router-dom';
 import CvlistComponent from '../components/CvList'
+import fs from 'fs';
 
 
 export interface MainPageProps extends RouteComponentProps {
@@ -93,6 +94,7 @@ class MainPage extends React.Component<MainPageProps, MainPageState> {
     }
 
     showCv = (id:any)=>{
+        console.log(id);
         localStorage.setItem("idJob",id);
         this.props.history.push('/updateCV');
     }
@@ -127,6 +129,51 @@ class MainPage extends React.Component<MainPageProps, MainPageState> {
             alert("CV-ul nu a fost salvat");
         }
     }
+
+
+    getXcel = async ()=>{
+        try{
+            const d = await this.service.getXcel({test:'asdasd'});
+            const data = d.data;
+            console.log(d);
+            //this.savee("d",data,"image/jpeg",true)
+            const contentType = 'application/vnd.ms-excel';
+            const b64Data = data;
+            const blob = this.b64toBlob(b64Data, contentType);
+            const blobUrl = URL.createObjectURL(blob);
+            let anchor = document.createElement('a');
+
+            anchor.href = blobUrl;
+            anchor.download = "dragos";
+            anchor.click();
+      
+        URL.revokeObjectURL(blobUrl);
+
+        }catch(err)
+        {
+            console.log(err);
+        }
+    }
+
+     b64toBlob = (b64Data:any, contentType:any='', sliceSize:any=512) => {
+        const byteCharacters = atob(b64Data);
+        const byteArrays = [];
+      
+        for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+          const slice = byteCharacters.slice(offset, offset + sliceSize);
+      
+          const byteNumbers = new Array(slice.length);
+          for (let i = 0; i < slice.length; i++) {
+            byteNumbers[i] = slice.charCodeAt(i);
+          }
+      
+          const byteArray = new Uint8Array(byteNumbers);
+          byteArrays.push(byteArray);
+        }
+      
+        const blob = new Blob(byteArrays, {type: contentType});
+        return blob;
+      }
 
 
     render() { 
@@ -173,7 +220,7 @@ class MainPage extends React.Component<MainPageProps, MainPageState> {
                                 Baza de date
                             </Typography>
 
-                            <Button className={classes.buttonDescarca} variant="contained" color="secondary">
+                            <Button className={classes.buttonDescarca} variant="contained" color="secondary" onClick={this.getXcel}>
                                 DESCARCA
                             </Button>
                         </Card>

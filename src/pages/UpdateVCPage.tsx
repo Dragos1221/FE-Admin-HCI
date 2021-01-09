@@ -21,19 +21,18 @@ class UpdateCVPage extends React.Component<UpdateCVPageProps, UpdateCVPageState>
     constructor(props:UpdateCVPageProps) {
         super(props);
         this.state = {
-            imgSrc:'public\\img.jpg',
+            imgSrc:'',
             varsta:'',
             gen:'',
             casatorit:'',
-            educatie:'assssssssssss',
-            munca:'asdasdasd',
-            nume:'Romete Razvan',
+            educatie:'',
+            munca:'',
+            nume:'',
         }
     }
 
     async  componentDidMount(){
         const id = localStorage.getItem('idJob');
-
         if(id=== "-1")
         {
             this.setState({
@@ -45,15 +44,15 @@ class UpdateCVPage extends React.Component<UpdateCVPageProps, UpdateCVPageState>
             })
             return;
         }
-
         let job;
         try{
             job =await this.service.getJobById(id);
-            job=job.data[1];
+            job=job.data;
         }catch(err)
         {
             console.log(err)
         }
+        console.log(job);
         this.setState({
             imgSrc:job.photo_id,
             varsta:job.age,
