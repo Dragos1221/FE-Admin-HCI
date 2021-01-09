@@ -1,42 +1,61 @@
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
 import { arrayMove, SortableContainer, SortableElement } from 'react-sortable-hoc';
 import '../JobsList.css';
 
-const SortableItem = SortableElement(({value, id}: {value: string, id: number}) =>
-  <li><span>{id}</span>{value}</li>
-);
 
-const SortableList = SortableContainer(({items}: {items: string[]}) => {
-  return (
-      <ul>
-        {items.map((value, index) => (
-          <SortableItem key={`item-${index}`} index={index} value={value} id = {index + 1} />
-        ))}
-      </ul>
+
+export interface JobListProps {
+  items: any;
+  updateListJobs: any;
+  select:any;
+  updateJob:any;
+}
+
+export interface JobListState {
+  items:any;
+}
+
+
+class JobsList2 extends React.Component<JobListProps, JobListState> {
+
+
+
+   SortableList = SortableContainer(({items}: {items: any[]}) => 
+      <ul key={2} id={'ulList'}>
+        {items.map((value :any, index:any) => {
+          if (value != null)
+            return <this.SortableItem key={value.id} index={value.id} value={value.name} id={value.id}/>;
+        })}
+      </ul>);
+
+ SortableItem = SortableElement(({value, id}: {value: string, id: number}) =>
+    <li key={id} onClick={(event:any)=>{
+      this.loadCv(event.target.id);
+    }}  id={''+id}  onDoubleClick={(event:any)=>{
+     this.props.updateJob(event.target.id)
+    }} value={value}><span>{id}</span>{value}</li>
   );
-});
 
-class JobsList2 extends React.Component<{}, {items: string[]}> {
-  constructor(props: {}) {
-    super(props);
-    this.state = {
-      items: ['Manager', 'Manager 2', 'Manager 3', 'Manager 4', 'Manager 5', 'Manager 6', 'Manager 7']
-    }
+  loadCv = (c:any)=>{
+    this.props.select(c);
+  }
+
+  updateJob = (id:any)=>{
+
   }
 
   private onSortEnd = ({oldIndex, newIndex}: {oldIndex: number, newIndex: number}) => {
-    this.setState({
-      items: arrayMove(this.state.items, oldIndex, newIndex),
-    });
+    console.log("am intrat aici");
+      let data = this.props.items;
+      data = arrayMove(data, oldIndex, newIndex);
+      this.props.updateListJobs(data);
   };
-
 
   render() {
     return (
     <div className={'container'}>
         <h2>Lista Posturi</h2>
-        <SortableList items={this.state.items} onSortEnd={this.onSortEnd} />
+        <this.SortableList items={this.props.items} onSortEnd={this.onSortEnd} distance={1} lockAxis="y"/>
     </div>
     )
   }
