@@ -88,6 +88,7 @@ class MainPage extends React.Component<MainPageProps, MainPageState> {
     }
 
     updateListJobs = (data:any)=>{
+        console.log("am ajuns");
         this.setState({
             jobsList:data,
         });
@@ -161,16 +162,13 @@ class MainPage extends React.Component<MainPageProps, MainPageState> {
       
         for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
           const slice = byteCharacters.slice(offset, offset + sliceSize);
-      
           const byteNumbers = new Array(slice.length);
           for (let i = 0; i < slice.length; i++) {
             byteNumbers[i] = slice.charCodeAt(i);
           }
-      
           const byteArray = new Uint8Array(byteNumbers);
           byteArrays.push(byteArray);
         }
-      
         const blob = new Blob(byteArrays, {type: contentType});
         return blob;
       }

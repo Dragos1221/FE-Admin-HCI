@@ -45,9 +45,10 @@ class JobsList2 extends React.Component<JobListProps, JobListState> {
   }
 
   private onSortEnd = ({oldIndex, newIndex}: {oldIndex: number, newIndex: number}) => {
-    console.log("am intrat aici");
       let data = this.props.items;
+      console.log(oldIndex, newIndex , data);
       data = arrayMove(data, oldIndex, newIndex);
+      console.log(data);
       this.props.updateListJobs(data);
   };
 
