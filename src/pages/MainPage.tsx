@@ -77,7 +77,7 @@ class MainPage extends React.Component<MainPageProps, MainPageState> {
         this.state ={
             jobsList:[],
             cvList:[],
-            isOpenCv:true
+            isOpenCv:falses
         }
        this.service = new ServiceApi();
     }
