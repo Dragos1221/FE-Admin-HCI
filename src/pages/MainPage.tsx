@@ -1,10 +1,11 @@
 import * as React from 'react';
 import { withStyles, createStyles } from '@material-ui/core/styles';
 import JobsList2 from '../../src/components/JobsList2'
-import { Button, Card, Typography } from '@material-ui/core';
+import { Button, Card, DialogTitle, Typography } from '@material-ui/core';
 import ServiceApi from '../remote/ServiceApi';
 import { RouteComponentProps } from 'react-router-dom';
 import CvlistComponent from '../components/CvList'
+import Dialog from '@material-ui/core/Dialog';
 import fs from 'fs';
 
 
@@ -15,6 +16,7 @@ export interface MainPageProps extends RouteComponentProps {
 export interface MainPageState {
     jobsList: any;
     cvList  : any;
+    isOpenCv: boolean;
 }
 
 const styles = createStyles({
@@ -75,6 +77,7 @@ class MainPage extends React.Component<MainPageProps, MainPageState> {
         this.state ={
             jobsList:[],
             cvList:[],
+            isOpenCv:true
         }
        this.service = new ServiceApi();
     }
@@ -178,6 +181,23 @@ class MainPage extends React.Component<MainPageProps, MainPageState> {
         const {classes} = this.props
         return (
             <div className={classes.container}>
+                <Dialog
+                    open={this.state.isOpenCv}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                >
+                    <DialogTitle id="alert-dialog-title">{"Alegeti o varianta"}</DialogTitle>
+                    <Button variant="contained" color="primary">
+                                    View
+                    </Button>
+                    <Button variant="contained" color="primary">
+                                    Delete
+                    </Button>
+                    <Button variant="contained" color="primary">
+                                    Back
+                    </Button>
+
+                </Dialog>
                 <div className={classes.pageBox}>
                     <div className = {classes.cvListBox}>
                         <Card className={classes.cvCard}>
