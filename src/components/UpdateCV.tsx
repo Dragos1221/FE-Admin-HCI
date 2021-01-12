@@ -12,6 +12,8 @@ export interface UpdateCVProps {
     educatie:string;
     munca:string;
     nume:string;
+    buttonText:any;
+    buttonFunction:any;
     handleChange(data: any): void;
 }
  
@@ -110,14 +112,15 @@ class UpdateCV extends React.Component<UpdateCVProps, UpdateCVState> {
 
     varsta = () => {
         let lst = [];
-
         for(let i = 10; i <= 60; ++i) {
             lst[i] = i;
         }
-
         return lst;
     }
 
+    buttonFunction=()=>{
+        this.props.buttonFunction(this.state.selectedImg);
+    }
 
     test = async ()=>{
         const b=await this.toBase64(this.state.selectedImg);
@@ -224,9 +227,9 @@ class UpdateCV extends React.Component<UpdateCVProps, UpdateCVState> {
             </div>
             <div className={classes.nextButtonBox}>
                 <Button variant='contained' color='primary'  className={classes.nextButton} onClick={
-                    this.test
+                    this.buttonFunction
                 }>
-                    Next
+                    {this.props.buttonText}
                 </Button>
             </div>
     </div>

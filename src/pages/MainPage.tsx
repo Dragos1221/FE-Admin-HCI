@@ -17,6 +17,8 @@ export interface MainPageState {
     jobsList: any;
     cvList  : any;
     isOpenCv: boolean;
+    isOpenJob:boolean;
+    cvIdSelected:any;
 }
 
 const styles = createStyles({
@@ -77,7 +79,9 @@ class MainPage extends React.Component<MainPageProps, MainPageState> {
         this.state ={
             jobsList:[],
             cvList:[],
-            isOpenCv:falses
+            isOpenCv:false,
+            isOpenJob:false,
+            cvIdSelected:0
         }
        this.service = new ServiceApi();
     }
@@ -97,10 +101,34 @@ class MainPage extends React.Component<MainPageProps, MainPageState> {
         });
     }
 
-    showCv = (id:any)=>{
-        console.log(id);
-        localStorage.setItem("idJob",id);
+    showCv = ()=>{
+        localStorage.setItem("idJob",this.state.cvIdSelected);
         this.props.history.push('/updateCV');
+    }
+
+    showJob = ()=>{
+        //localStorage.setItem("idJob",this.state.cvIdSelected);
+        this.props.history.push('/updateJob');
+    }
+
+    showModalCv = (id:any) =>{
+        this.setState({
+            isOpenCv:true,
+            cvIdSelected:id
+        })
+    }
+
+    showModalJob = (id:any) =>{
+        this.setState({
+            isOpenJob:true,
+        })
+    }
+
+    modalOff = ()=>{
+        this.setState({
+            isOpenCv:false,
+            isOpenJob:false,
+        })
     }
 
     newCV = ()=>{
@@ -187,22 +215,37 @@ class MainPage extends React.Component<MainPageProps, MainPageState> {
                     aria-describedby="alert-dialog-description"
                 >
                     <DialogTitle id="alert-dialog-title">{"Alegeti o varianta"}</DialogTitle>
-                    <Button variant="contained" color="primary">
+                    <Button variant="contained" color="primary" onClick={this.showCv}>
                                     View
                     </Button>
                     <Button variant="contained" color="primary">
                                     Delete
                     </Button>
-                    <Button variant="contained" color="primary">
+                    <Button variant="contained" color="primary" onClick={this.modalOff}>
                                     Back
                     </Button>
-
+                </Dialog>
+                <Dialog
+                    open={this.state.isOpenJob}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                >
+                    <DialogTitle id="alert-dialog-title">{"Alegeti o varianta"}</DialogTitle>
+                    <Button variant="contained" color="primary" onClick={this.showJob}>
+                                    View
+                    </Button>
+                    <Button variant="contained" color="primary">
+                                    Delete
+                    </Button>
+                    <Button variant="contained" color="primary" onClick={this.modalOff}>
+                                    Back
+                    </Button>
                 </Dialog>
                 <div className={classes.pageBox}>
                     <div className = {classes.cvListBox}>
                         <Card className={classes.cvCard}>
                             <div className={classes.jobList}>
-                                <JobsList2 select={this.selectedCv} updateJob={(e:any)=>console.log(e)} updateListJobs={this.updateListJobs} items={this.state.jobsList} />
+                                <JobsList2 select={this.selectedCv} updateJob={this.showModalJob} updateListJobs={this.updateListJobs} items={this.state.jobsList} />
                             </div>
                             
                             <div className={classes.jobButtonBox}>
@@ -219,7 +262,7 @@ class MainPage extends React.Component<MainPageProps, MainPageState> {
                     <div className = {classes.cvListBox}>
                         <Card className={classes.cvCard}>
                             <div className={classes.jobList}>
-                                <CvlistComponent selectCv={this.showCv} items={this.state.cvList} /></div>
+                                <CvlistComponent selectCv={this.showModalCv} items={this.state.cvList} /></div>
                             
                             <div className={classes.jobButtonBox}>
                                 <Button variant="contained" color="primary" onClick={this.newCV}>

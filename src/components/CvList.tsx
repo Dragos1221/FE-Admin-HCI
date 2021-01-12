@@ -5,6 +5,7 @@ import '../JobsList.css';
 export interface CvListProps {
   items: any;
   selectCv:any;
+  
 }
 
 export interface CVListState {
@@ -24,7 +25,6 @@ class JobsList2 extends React.Component<CvListProps, CVListState> {
   
    SortableItem = SortableElement(({value, id , order}: {value: string, id: number , order:number}) =>
     <li key={id} onDoubleClick={(e:any)=>{
-        console.log(e);
         this.props.selectCv(e.target.id);
       }
     } id={''+id} value={value}> <span>{order}</span>{value}</li>

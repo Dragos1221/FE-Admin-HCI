@@ -6,7 +6,7 @@ export interface EditJobProps {
     classes: any;
     nume: string;
     descriere: string;
-    handleData(data:any): void;
+    handleData:any;
 }
  
 export interface EditJobState {
@@ -48,11 +48,11 @@ const styles = createStyles({
  
 class EditJob extends React.Component<EditJobProps, EditJobState> {
     
-    handleChange = (data: any) => (event: any) => {
+    handleData = (type: any) => (event: any) => {
         this.props.handleData({
-            [data]: event.targe.value,
+            [type]: event.target.value,
         });
-    }
+    };
 
     render() {
         const {classes, nume, descriere} = this.props;
@@ -66,7 +66,7 @@ class EditJob extends React.Component<EditJobProps, EditJobState> {
                                 label = "Nume" 
                                 variant = "outlined" 
                                 value = {nume} 
-                                onChange={this.handleChange('nume')} 
+                                onChange={this.handleData('nume')}
                                 className = {classes.nume}
                                 />
                             </CardContent>
@@ -79,7 +79,7 @@ class EditJob extends React.Component<EditJobProps, EditJobState> {
                                 label = "Descriere"
                                 variant = "outlined"
                                 value = {descriere}
-                                onChange={this.handleChange('descriere')}
+                                onChange={this.handleData('descriere')}
                                 multiline
                                 rows = {20}
                                 className = {classes.descriere} 

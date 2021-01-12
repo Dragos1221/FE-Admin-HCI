@@ -22,7 +22,7 @@ class ServiceApi {
     }
 
     async updateCv(body:any) {
-    	return this.instance.post('http://localhost:3000/admin/cvs/test',body);
+    	return this.instance.post('http://localhost:3000/admin/jobs/test',body);
     }
 
     async getXcel(body:any) {

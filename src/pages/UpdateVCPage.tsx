@@ -14,6 +14,8 @@ export interface UpdateCVPageState {
     educatie:string;
     munca:string;
     nume:string;
+    buttonText:any;
+    buttonFunction:any;
 }
  
 class UpdateCVPage extends React.Component<UpdateCVPageProps, UpdateCVPageState> {
@@ -28,6 +30,8 @@ class UpdateCVPage extends React.Component<UpdateCVPageProps, UpdateCVPageState>
             educatie:'',
             munca:'',
             nume:'',
+            buttonText:"next",
+            buttonFunction:'',
         }
     }
 
@@ -40,7 +44,9 @@ class UpdateCVPage extends React.Component<UpdateCVPageProps, UpdateCVPageState>
                 varsta:"",
                 educatie:"",
                 munca:"",
-                nume:""
+                nume:"",
+                buttonText:"Save",
+                buttonFunction:this.save
             })
             return;
         }
@@ -60,7 +66,18 @@ class UpdateCVPage extends React.Component<UpdateCVPageProps, UpdateCVPageState>
             educatie:job.education,
             munca:job.professional,
             nume:job.name,
+            buttonText:"Update",
+            buttonFunction:this.update
         })
+    }
+
+
+    save = (img:any)=>{
+        console.log(img);
+    }
+
+    update =(img:any)=>{
+        console.log(img);
     }
 
     handleChange = (data: any) => {
