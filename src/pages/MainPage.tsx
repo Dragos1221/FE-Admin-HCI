@@ -88,6 +88,7 @@ class MainPage extends React.Component<MainPageProps, MainPageState> {
 
     async componentDidMount()
     {
+        localStorage.clear();
         const jobs =await this.service.getJobs();
         this.setState({
             jobsList:jobs.data,
@@ -95,20 +96,35 @@ class MainPage extends React.Component<MainPageProps, MainPageState> {
     }
 
     updateListJobs = (data:any)=>{
-        console.log("am ajuns");
         this.setState({
             jobsList:data,
         });
     }
 
     showCv = ()=>{
-        localStorage.setItem("idJob",this.state.cvIdSelected);
+        localStorage.setItem("idCV",this.state.cvIdSelected);
         this.props.history.push('/updateCV');
     }
 
     showJob = ()=>{
-        //localStorage.setItem("idJob",this.state.cvIdSelected);
-        this.props.history.push('/updateJob');
+        this.props.history.push('/editJob');
+    }
+
+    deleteJob = async ()=>{
+        const id = localStorage.getItem('idJob');
+        try{
+            await this.service.deleteJob(id);
+            const jobs =await this.service.getJobs();
+            this.setState({
+                isOpenCv:false,
+            isOpenJob:false,
+                jobsList:jobs.data,
+            });
+            return;
+        }catch(err){
+            console.log(err);
+        }
+        this.modalOff();
     }
 
     showModalCv = (id:any) =>{
@@ -119,6 +135,7 @@ class MainPage extends React.Component<MainPageProps, MainPageState> {
     }
 
     showModalJob = (id:any) =>{
+        localStorage.setItem("idJob", id);
         this.setState({
             isOpenJob:true,
         })
@@ -132,9 +149,16 @@ class MainPage extends React.Component<MainPageProps, MainPageState> {
     }
 
     newCV = ()=>{
-        localStorage.setItem("idJob","-1");
+        localStorage.setItem("idCv","-1");
         this.props.history.push('/updateCV');
     }
+
+    newJob = ()=>{
+        localStorage.setItem("idJob","-1");
+        this.props.history.push('/editJob');
+    }
+
+
 
     selectedCv = async (id: any)=>{
         try{
@@ -154,8 +178,6 @@ class MainPage extends React.Component<MainPageProps, MainPageState> {
 
     save= ()=>{
         try{
-            
-
         }catch(err)
         {
             alert("CV-ul nu a fost salvat");
@@ -174,13 +196,10 @@ class MainPage extends React.Component<MainPageProps, MainPageState> {
             const blob = this.b64toBlob(b64Data, contentType);
             const blobUrl = URL.createObjectURL(blob);
             let anchor = document.createElement('a');
-
             anchor.href = blobUrl;
             anchor.download = "dragos";
             anchor.click();
-      
         URL.revokeObjectURL(blobUrl);
-
         }catch(err)
         {
             console.log(err);
@@ -234,7 +253,7 @@ class MainPage extends React.Component<MainPageProps, MainPageState> {
                     <Button variant="contained" color="primary" onClick={this.showJob}>
                                     View
                     </Button>
-                    <Button variant="contained" color="primary">
+                    <Button variant="contained" color="primary" onClick={this.deleteJob}>
                                     Delete
                     </Button>
                     <Button variant="contained" color="primary" onClick={this.modalOff}>
@@ -247,14 +266,9 @@ class MainPage extends React.Component<MainPageProps, MainPageState> {
                             <div className={classes.jobList}>
                                 <JobsList2 select={this.selectedCv} updateJob={this.showModalJob} updateListJobs={this.updateListJobs} items={this.state.jobsList} />
                             </div>
-                            
                             <div className={classes.jobButtonBox}>
-                                <Button variant="contained" color="primary">
-                                    Primary
-                                </Button>
-
-                                <Button variant="contained" color="secondary">
-                                    Secondary
+                                <Button variant="contained" color="primary" onClick={this.newJob}>
+                                    New
                                 </Button>
                             </div>
                         </Card>
@@ -263,14 +277,9 @@ class MainPage extends React.Component<MainPageProps, MainPageState> {
                         <Card className={classes.cvCard}>
                             <div className={classes.jobList}>
                                 <CvlistComponent selectCv={this.showModalCv} items={this.state.cvList} /></div>
-                            
                             <div className={classes.jobButtonBox}>
                                 <Button variant="contained" color="primary" onClick={this.newCV}>
                                     New CV
-                                </Button>
-
-                                <Button variant="contained" color="secondary">
-                                    Secondary
                                 </Button>
                             </div>
                         </Card>
@@ -280,7 +289,6 @@ class MainPage extends React.Component<MainPageProps, MainPageState> {
                             <Typography variant="h5" component="h2">
                                 Baza de date
                             </Typography>
-
                             <Button className={classes.buttonDescarca} variant="contained" color="secondary" onClick={this.getXcel}>
                                 DESCARCA
                             </Button>

@@ -33,7 +33,7 @@ class JobsList2 extends React.Component<JobListProps, JobListState> {
       this.loadCv(event.target.id);
     }}  id={''+id}  onDoubleClick={(event:any)=>{
      this.props.updateJob(event.target.id)
-    }} value={value}><span>{id}</span>{value}</li>
+    }} value={value}>{value}</li>
   );
 
   loadCv = (c:any)=>{

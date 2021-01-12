@@ -17,7 +17,7 @@ class ServiceApi {
     	return this.instance.get('http://localhost:3000/admin/cvs/forjob/'+id);
     }
 
-    async getJobById(id:any) {
+    async getCvById(id:any) {
     	return this.instance.get('http://localhost:3000/admin/cvs/'+id);
     }
 
@@ -27,6 +27,22 @@ class ServiceApi {
 
     async getXcel(body:any) {
     	return this.instance.post('http://localhost:3000/admin/jobs/excel',body);
+    }
+
+    async getJobById(id:any) {
+    	return this.instance.get('http://localhost:3000/admin/jobs/'+id);
+    }
+
+    async deleteJob(id:any) {
+    	return this.instance.delete('http://localhost:3000/admin/jobs/'+id);
+    }
+
+    async saveJob(body:any) {
+    	return this.instance.post('http://localhost:3000/admin/jobs/add',body);
+    }
+
+    async updateJob(body:any , id:any) {
+    	return this.instance.put('http://localhost:3000/admin/jobs/'+id,body);
     }
 }
 export default ServiceApi;

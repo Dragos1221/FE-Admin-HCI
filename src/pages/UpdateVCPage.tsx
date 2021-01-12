@@ -36,8 +36,9 @@ class UpdateCVPage extends React.Component<UpdateCVPageProps, UpdateCVPageState>
     }
 
     async  componentDidMount(){
-        const id = localStorage.getItem('idJob');
-        if(id=== "-1")
+        const id = localStorage.getItem('idCV');
+        console.log(id);
+        if(id=== "-1" || id == undefined )
         {
             this.setState({
                 imgSrc:"",
@@ -52,7 +53,7 @@ class UpdateCVPage extends React.Component<UpdateCVPageProps, UpdateCVPageState>
         }
         let job;
         try{
-            job =await this.service.getJobById(id);
+            job =await this.service.getCvById(id);
             job=job.data;
         }catch(err)
         {

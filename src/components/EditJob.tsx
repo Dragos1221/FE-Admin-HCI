@@ -7,6 +7,8 @@ export interface EditJobProps {
     nume: string;
     descriere: string;
     handleData:any;
+    buttonFunction:any;
+    buttonName:any;
 }
  
 export interface EditJobState {
@@ -89,8 +91,8 @@ class EditJob extends React.Component<EditJobProps, EditJobState> {
                     </div>
                 </div>
                 <div className = {classes.nextButtonBox}>
-                    <Button variant="contained" color="primary" className = {classes.nextButton}>
-                        Next
+                    <Button variant="contained" color="primary" className = {classes.nextButton} onClick={this.props.buttonFunction}>
+                       {this.props.buttonName}
                     </Button>
                 </div>
             </div>

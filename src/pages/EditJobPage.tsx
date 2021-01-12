@@ -1,25 +1,65 @@
 import * as React from 'react';
 import { Component } from 'react';
+import { RouteComponentProps } from 'react-router-dom';
 import EditJob from '../components/EditJob';
-
-export interface UpdateJobPageProps {
+import ServiceApi from '../remote/ServiceApi'
+export interface UpdateJobPageProps extends RouteComponentProps{
     
 }
  
 export interface UpdateJobPageState {
     nume: string;
     descriere: string;
+    buttonFunction:any;
+    buttonName:any;
 }
  
 class UpdateJobPage extends React.Component<UpdateJobPageProps, UpdateJobPageState> {
-    
-    constructor(props: UpdateJobPageProps) {
-        super(props);
+    private service:ServiceApi = new ServiceApi();
 
-        this.state = {
-            nume: 'Bombardier',
-            descriere: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
+    async componentDidMount(){
+        const id = localStorage.getItem('idJob');
+        if(id=== "-1" || id == undefined)
+        {
+            this.setState({
+                nume:'',
+                descriere:'',
+                buttonFunction:this.save,
+                buttonName:"Save"
+            })
+            return;
         }
+        try{
+            const job = await this.service.getJobById(id);
+            this.setState({
+                nume:job.data.name,
+                descriere:job.data.description,
+                buttonFunction:this.update,
+                buttonName:"Back"
+
+            })
+            console.log(job);
+        }catch(err)
+        {
+
+        }
+    }
+
+
+    save = async ()=>{
+         try{
+             await this.service.saveJob({
+                 name:this.state.nume,
+                 description:this.state.descriere
+             })
+             this.props.history.push("/home");
+        }catch(err){
+            console.log(err)
+        }
+    }
+
+    update= () => {
+        this.props.history.push("/home");
     }
 
     handleChange = (data: any) => {
