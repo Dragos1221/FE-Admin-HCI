@@ -2,6 +2,7 @@ import * as React from 'react';
 import Login from '../../src/components/Login';
 import axios, { AxiosInstance } from 'axios';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
+import serviceApi from "../remote/ServiceApi";
 
 
 interface LoginPageProps extends RouteComponentProps {}
@@ -14,7 +15,7 @@ interface LoginPageState {
 }
 
 class LoginPage extends React.Component<LoginPageProps, LoginPageState> {
-	instance: AxiosInstance;
+	private service:serviceApi = new serviceApi();
 	constructor(props: LoginPageProps) {
 		super(props);
 		this.state = {
@@ -23,9 +24,6 @@ class LoginPage extends React.Component<LoginPageProps, LoginPageState> {
 			isError: false,
 			errorMessage: 'Parola nu este corecta.',
 		};
-		this.instance = axios.create({
-			baseURL: "asdasd",
-		});
 	}
 
 	handleChange = (data: any) => {
@@ -43,10 +41,8 @@ class LoginPage extends React.Component<LoginPageProps, LoginPageState> {
 
 	submit = async() => {
 		try {
-			const result = await this.instance.post('/login', this.state);
-			const token = result.data;
-			localStorage.setItem('token', token);
-			//this.props.history.push('/main');
+			const result = await this.service.login({...this.state})
+			this.props.history.push("/home");
 		} catch (error) {
 			//const { response } = error;
 			this.setState({
