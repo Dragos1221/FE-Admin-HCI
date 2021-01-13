@@ -118,16 +118,10 @@ class UpdateCV extends React.Component<UpdateCVProps, UpdateCVState> {
         return lst;
     }
 
-    buttonFunction=()=>{
-        this.props.buttonFunction(this.state.selectedImg);
-    }
-
-    test = async ()=>{
-        const b=await this.toBase64(this.state.selectedImg);
-        this.service.updateCv({
-            img:b+"dasd",
-            test:'ttttt'
-        })
+    buttonFunction= async()=>{
+        const b=await this.toBase64(this.state.selectedImg)
+        console.log(b, "asta e bb");
+        this.props.buttonFunction(b);
     }
 
    toBase64 = (file:any) => new Promise((resolve, reject) => {

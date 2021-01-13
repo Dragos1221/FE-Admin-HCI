@@ -1,9 +1,8 @@
-import { Container } from '@material-ui/core';
 import * as React from 'react';
-import { Component } from 'react';
+import { RouteComponentProps } from 'react-router-dom';
 import UpdateCV from '../components/UpdateCV';
 import ServiceApi from '../remote/ServiceApi'
-export interface UpdateCVPageProps {
+export interface UpdateCVPageProps  extends RouteComponentProps{
 }
  
 export interface UpdateCVPageState {
@@ -73,13 +72,52 @@ class UpdateCVPage extends React.Component<UpdateCVPageProps, UpdateCVPageState>
     }
 
 
-    save = (img:any)=>{
-        console.log(img);
+    save = async (imgg:any)=>{
+        try{
+            const idjob = localStorage.getItem('job');
+            const data = {
+                img:imgg,
+                age:this.state.varsta,
+                education:this.state.educatie,
+                name:"dragos",
+                professional:this.state.educatie,
+                sex:this.state.gen,
+                job_id:idjob,
+            }
+            await this.service.saveCv(data);
+        }catch(err)
+        {
+            console.log(err);
+        }
+        this.props.history.push("/home");
+        
     }
 
-    update =(img:any)=>{
-        console.log(img);
+    update =async (imgg:any)=>{
+        const id = localStorage.getItem('idCV');
+        try{
+            const data = {
+                img:imgg,
+                age:this.state.varsta,
+                education:this.state.educatie,
+                name:this.state.nume,
+                professional:this.state.educatie,
+                sex:this.state.gen
+            }
+            await this.service.updateCv(data,id)
+        }catch(err)
+        {
+            console.log(err);
+        }
+        this.props.history.push("/home");
     }
+
+    toBase64 = (file:any) => new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = error => reject(error);
+    });
 
     handleChange = (data: any) => {
         this.setState({

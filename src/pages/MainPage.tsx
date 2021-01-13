@@ -117,7 +117,7 @@ class MainPage extends React.Component<MainPageProps, MainPageState> {
             const jobs =await this.service.getJobs();
             this.setState({
                 isOpenCv:false,
-            isOpenJob:false,
+                isOpenJob:false,
                 jobsList:jobs.data,
             });
             return;
@@ -125,6 +125,22 @@ class MainPage extends React.Component<MainPageProps, MainPageState> {
             console.log(err);
         }
         this.modalOff();
+    }
+
+    deleteCv= async ()=>{
+        const id = this.state.cvIdSelected
+        try{
+            await this.service.deleteCV(id);
+            this.setState({
+                isOpenCv:false,
+                isOpenJob:false,
+                cvList:[]
+            });
+        }catch(err)
+        {
+            console.log(err);
+            this.modalOff();
+        }
     }
 
     showModalCv = (id:any) =>{
@@ -158,10 +174,9 @@ class MainPage extends React.Component<MainPageProps, MainPageState> {
         this.props.history.push('/editJob');
     }
 
-
-
     selectedCv = async (id: any)=>{
         try{
+            localStorage.setItem("job",id);
             const data =await this.service.getCv(id);
             this.setState({
                 cvList:data.data,
@@ -197,7 +212,7 @@ class MainPage extends React.Component<MainPageProps, MainPageState> {
             const blobUrl = URL.createObjectURL(blob);
             let anchor = document.createElement('a');
             anchor.href = blobUrl;
-            anchor.download = "dragos";
+            anchor.download = "Rezultate";
             anchor.click();
         URL.revokeObjectURL(blobUrl);
         }catch(err)
@@ -237,7 +252,7 @@ class MainPage extends React.Component<MainPageProps, MainPageState> {
                     <Button variant="contained" color="primary" onClick={this.showCv}>
                                     View
                     </Button>
-                    <Button variant="contained" color="primary">
+                    <Button variant="contained" color="primary" onClick={this.deleteCv}>
                                     Delete
                     </Button>
                     <Button variant="contained" color="primary" onClick={this.modalOff}>
